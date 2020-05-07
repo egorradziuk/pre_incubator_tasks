@@ -5,7 +5,8 @@ import java.util.Scanner;
 public class FirstTask {
 
     final static private char[] array = {'[',']','{','}','<','>','(',')'};
-    static Validator validator = new Validator();
+    //static Validator validator = new Validator();
+
 
     public static void main(String[] args) {
 
@@ -16,9 +17,27 @@ public class FirstTask {
         while(isNotCorrect) {
             System.out.println("Input something: ");
             str = scanner.next();
-            isNotCorrect = validator.isNotCorrect(array, str);
+            isNotCorrect = isNotCorrect(array, str);
         }
         scanner.close();
+        System.out.println("Your string is correct.");
     }
 
+    public static boolean isNotCorrect(char[] array, String str) {
+        int prerviousIndex = -1;
+        int currentIndex = 0;
+
+        for(char c : array) {
+
+            currentIndex = str.indexOf(c);
+
+            if (prerviousIndex < currentIndex) {
+                prerviousIndex = currentIndex;
+            } else {
+                System.out.println("It's wrong! Try again.");
+                return true;
+            }
+        }
+        return false;
+    }
 }
