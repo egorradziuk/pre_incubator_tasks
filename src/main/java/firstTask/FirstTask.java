@@ -1,43 +1,58 @@
 package firstTask;
 
-import java.util.Scanner;
+import java.util.*;
 
 public class FirstTask {
 
-    final static private char[] array = {'[',']','{','}','<','>','(',')'};
-    //static Validator validator = new Validator();
+    final static private List<String> listOpenBrackets = new ArrayList<>
+            (Arrays.asList("[","{","<","("));
+    final static private List<String> listCloseBrackets = new ArrayList<>
+            (Arrays.asList("]","}",">",")"));
+
 
 
     public static void main(String[] args) {
 
+        Map<String, String> map = new HashMap<String, String>() {{
+            put("]","[");
+            put("}","{");
+            put(">","<");
+            put(")","(");
+        }};
+
         Scanner scanner = new Scanner(System.in);
         String str = "";
-        boolean isNotCorrect = true;
+        boolean isCorrect = false;
 
-        while(isNotCorrect) {
+        while(!isCorrect) {
             System.out.println("Input something: ");
-            str = scanner.next();
-            isNotCorrect = isNotCorrect(array, str);
+            str = scanner.nextLine();
+            isCorrect = isCorrect(str, listOpenBrackets, listCloseBrackets,
+                    map);
         }
         scanner.close();
         System.out.println("Your string is correct.");
     }
 
-    public static boolean isNotCorrect(char[] array, String str) {
-        int prerviousIndex = -1;
-        int currentIndex = 0;
+    public static boolean isCorrect(String str, List<String> listOB,
+                             List<String> listCB, Map<String, String> map) {
+        Stack stack = new Stack();
 
-        for(char c : array) {
-
-            currentIndex = str.indexOf(c);
-
-            if (prerviousIndex < currentIndex) {
-                prerviousIndex = currentIndex;
-            } else {
-                System.out.println("It's wrong! Try again.");
-                return true;
+        for(char c : str.toCharArray()){
+            String symbol = String.valueOf(c);
+            if (listOB.contains(symbol)) {
+                stack.push(symbol);
+            } else if (listCB.contains(symbol)) {
+                if (stack.empty() || !stack.pop().equals(map.get(symbol))) {
+                    return false;
+                }
             }
         }
-        return false;
+        return isStackEmpty(stack);
     }
+
+    public static boolean isStackEmpty (Stack stack) {
+        return stack.empty();
+    }
+
 }
