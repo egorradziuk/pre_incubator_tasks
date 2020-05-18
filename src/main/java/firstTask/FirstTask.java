@@ -36,23 +36,19 @@ public class FirstTask {
 
     public static boolean isCorrect(String str, List<String> listOB,
                              List<String> listCB, Map<String, String> map) {
-        Stack stack = new Stack();
+        ArrayDeque<String> ad = new ArrayDeque<>();
 
         for(char c : str.toCharArray()){
             String symbol = String.valueOf(c);
             if (listOB.contains(symbol)) {
-                stack.push(symbol);
+                ad.addLast(symbol);
             } else if (listCB.contains(symbol)) {
-                if (stack.empty() || !stack.pop().equals(map.get(symbol))) {
+                if (ad.isEmpty() || !ad.pollLast().equals(map.get(symbol))) {
                     return false;
                 }
             }
         }
-        return isStackEmpty(stack);
-    }
-
-    public static boolean isStackEmpty (Stack stack) {
-        return stack.empty();
+        return ad.isEmpty();
     }
 
 }
