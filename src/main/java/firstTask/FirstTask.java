@@ -1,6 +1,7 @@
 package firstTask;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class FirstTask {
 
@@ -8,8 +9,6 @@ public class FirstTask {
             (Arrays.asList("[","{","<","("));
     final static private List<String> listCloseBrackets = new ArrayList<>
             (Arrays.asList("]","}",">",")"));
-
-
 
     public static void main(String[] args) {
 
@@ -27,6 +26,14 @@ public class FirstTask {
         while(!isCorrect) {
             System.out.println("Input something: ");
             str = scanner.nextLine();
+            List<Character> list = str.chars()
+                    .mapToObj(c -> (char) c)
+                    .collect(Collectors.toList());
+            list = list.stream().filter(
+                s -> listOpenBrackets.contains(String.valueOf(s))
+                  || listCloseBrackets.contains(String.valueOf(s)))
+            .collect(Collectors.toList());
+            System.out.println("list<Character> " + list);
             isCorrect = isCorrect(str, listOpenBrackets, listCloseBrackets,
                     map);
         }
@@ -36,19 +43,21 @@ public class FirstTask {
 
     public static boolean isCorrect(String str, List<String> listOB,
                              List<String> listCB, Map<String, String> map) {
-        ArrayDeque<String> ad = new ArrayDeque<>();
+        ArrayDeque<String> adq = new ArrayDeque<>();
 
         for(char c : str.toCharArray()){
             String symbol = String.valueOf(c);
             if (listOB.contains(symbol)) {
-                ad.addLast(symbol);
+                adq.addLast(symbol);
             } else if (listCB.contains(symbol)) {
-                if (ad.isEmpty() || !ad.pollLast().equals(map.get(symbol))) {
+                if (adq.isEmpty() || !adq.pollLast().equals(map.get(symbol))) {
                     return false;
                 }
             }
         }
-        return ad.isEmpty();
+        return adq.isEmpty();
     }
 
 }
+
+
