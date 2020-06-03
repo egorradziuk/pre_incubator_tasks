@@ -5,9 +5,9 @@ import java.util.stream.Collectors;
 
 public class FirstTask {
 
-    final static private List<String> listOpenBrackets = new ArrayList<>
+    private static final List<String> listOpenBrackets = new ArrayList<>
             (Arrays.asList("[","{","<","("));
-    final static private List<String> listCloseBrackets = new ArrayList<>
+    private static final List<String> listCloseBrackets = new ArrayList<>
             (Arrays.asList("]","}",">",")"));
 
     public static void main(String[] args) {
